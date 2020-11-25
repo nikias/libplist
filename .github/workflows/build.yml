@@ -30,7 +30,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: libplist-latest
-        path: *.tar.gz
+        path: libplist*.tar.gz
 #  build-macOS:
 #    runs-on: macOS-latest
 #    steps:
