@@ -15,6 +15,11 @@ jobs:
       run: make
     - name: make check
       run: make check
+    - name: make install
+      run: |
+          mkdir -p dest
+          DESTDIR=dest make install
+          ls -R dest
   build-macOS:
     runs-on: macOS-latest
     steps:
