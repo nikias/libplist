@@ -18,7 +18,7 @@ jobs:
     - name: make install
       run: |
           mkdir -p dest
-          DESTDIR=dest make install
+          DESTDIR=`pwd`/dest make install
           ls -R dest
   build-macOS:
     runs-on: macOS-latest
