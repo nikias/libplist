@@ -21,10 +21,11 @@ jobs:
       run: |
           mkdir -p dest
           DESTDIR=`pwd`/dest make install
+          echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
     - name: publish
       uses: actions/upload-artifact@v2
       with:
-        name: libplist-latest
+        name: libplist-${{env.target_triplet}}_latest
         path: dest/*
 #  build-macOS:
 #    runs-on: macOS-latest
