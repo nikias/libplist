@@ -7,7 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: install dependencies
-      run: sudo apt-get install cython
+      run: |
+          sudo apt-get install cython
+          echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
@@ -17,15 +19,14 @@ jobs:
       run: make
     - name: make check
       run: make check
-    - name: make install
+    - name: prepare artifact
       run: |
           mkdir -p dest
           DESTDIR=`pwd`/dest make install
-          echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
-    - name: publish
+    - name: publish artifact
       uses: actions/upload-artifact@v2
       with:
-        name: libplist-${{env.target_triplet}}_latest
+        name: libplist-latest_${{env.target_triplet}}
         path: dest/*
 #  build-macOS:
 #    runs-on: macOS-latest
