@@ -21,16 +21,11 @@ jobs:
       run: |
           mkdir -p dest
           DESTDIR=`pwd`/dest make install
-    - name: package
-      run: |
-          PACKAGE_NAME=libplist-latest_`gcc -dumpmachine`.tar.gz
-          echo "Packaging into ${PACKAGE_NAME}"
-          tar -C dest -czf ${PACKAGE_NAME} usr
     - name: publish
       uses: actions/upload-artifact@v2
       with:
         name: libplist-latest
-        path: libplist*.tar.gz
+        path: dest/*
 #  build-macOS:
 #    runs-on: macOS-latest
 #    steps:
