@@ -17,11 +17,11 @@ jobs:
       run: make check
     - name: make install
       run: |
-          #mkdir -p dest
-          #DESTDIR=`pwd`/dest make install
-          #ls -R dest
-          make install
-          ls -R /usr/local
+          PACKAGE_NAME=libplist-`git describe`_`gcc -dumpmachine`.tar.gz
+          mkdir -p dest
+          DESTDIR=`pwd`/dest make install
+          tar -C dest czf ../${PACKAGE_NAME} *
+          tar tzf ${PACKAGE_NAME}
   build-macOS:
     runs-on: macOS-latest
     steps:
