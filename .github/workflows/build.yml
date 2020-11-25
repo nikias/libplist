@@ -23,7 +23,7 @@ jobs:
       run: |
           PACKAGE_NAME=libplist-`git describe`_`gcc -dumpmachine`.tar.gz
           echo "Packaging into ${PACKAGE_NAME}"
-          tar -C dest czf ../${PACKAGE_NAME} *
+          tar -C dest -czf ${PACKAGE_NAME} usr
           echo "Listing files of ${PACKAGE_NAME}"
           tar tzf ${PACKAGE_NAME}
 #  build-macOS:
