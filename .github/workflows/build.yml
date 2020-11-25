@@ -28,9 +28,9 @@ jobs:
           tar -C dest -czf ${PACKAGE_NAME} usr
     - name: publish
       uses: actions/upload-artifact@v2
-        with:
-          name: libplist-latest
-          path: *.tar.gz
+      with:
+        name: libplist-latest
+        path: *.tar.gz
 #  build-macOS:
 #    runs-on: macOS-latest
 #    steps:
