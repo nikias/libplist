@@ -9,6 +9,8 @@ jobs:
     - name: install dependencies
       run: sudo apt-get install cython
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: autogen
       run: ./autogen.sh
     - name: make
