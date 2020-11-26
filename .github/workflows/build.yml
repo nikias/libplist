@@ -109,9 +109,9 @@ jobs:
       run: |
           mkdir -p dest
           DESTDIR=`pwd`/dest make install
-          tar -C dest -cf libplist.tar usr
+          tar -C dest -cf libplist.tar mingw64
     - name: publish artifact
       uses: actions/upload-artifact@v2
       with:
-        name: libplist-latest_win32
+        name: libplist-latest_win
         path: libplist.tar
