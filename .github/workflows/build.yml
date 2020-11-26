@@ -63,40 +63,55 @@ jobs:
       with:
         name: libplist-latest_macOS
         path: libplist.tar
-#  build-windows:
-#    runs-on: windows-latest
-#    defaults:
-#      run:
-#        shell: msys2 {0}
-#    steps:
-#    - uses: msys2/setup-msys2@v2
-#      with:
-#        release: false
-#        update: false
-#        install: >-
-#          base-devel
-#          git
-#          mingw-w64-x86_64-gcc
-#          make
-#          libtool
-#          autoconf
-#          automake-wrapper
-#    - uses: actions/checkout@v2
-#    - name: autogen
-#      run: ./autogen.sh CC=gcc CXX=g++ --without-cython
-#    - name: make
-#      run: make
-#    - name: make check
-#      run: make check
-#    - name: print test logs
-#      run: |
-#          for I in test/*.trs; do
-#            RES=`grep ":test-result" $I |cut -d ":" -f 3`
-#            if test $RES != PASS; then
-#              TESTNAME=`basename $I .trs`
-#              echo $TESTNAME:
-#              cat test/$TESTNAME.log
-#              echo
-#            fi
-#          done
-#      shell: bash
+  build-windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+    - uses: msys2/setup-msys2@v2
+      with:
+        release: false
+        update: false
+        install: >-
+          base-devel
+          git
+          mingw-w64-x86_64-gcc
+          make
+          libtool
+          autoconf
+          automake-wrapper
+    - name: install dependencies
+      run: |
+          echo `gcc -dumpmachine`
+    - uses: actions/checkout@v2
+    - name: autogen
+      run: ./autogen.sh CC=gcc CXX=g++ --without-cython
+    - name: make
+      run: make
+    - name: make check
+      run: make check
+    - name: print test logs
+      run: |
+          for I in test/*.trs; do
+            RES=`grep ":test-result" $I |cut -d ":" -f 3`
+            if test $RES != PASS; then
+              TESTNAME=`basename $I .trs`
+              echo $TESTNAME:
+              cat test/$TESTNAME.log
+              echo
+            fi
+          done
+      shell: bash
+    - name: make install
+      run: make install
+    - name: prepare artifact
+      run: |
+          mkdir -p dest
+          DESTDIR=`pwd`/dest make install
+          tar -C dest -cf libplist.tar usr
+    - name: publish artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: libplist-latest_win32
+        path: libplist.tar
