@@ -14,7 +14,7 @@ jobs:
       with:
         fetch-depth: 0
     - name: autogen
-      run: ./autogen.sh
+      run: ./autogen.sh LDFLAGS="-Wl,-rpath=/usr/local/lib"
     - name: make
       run: make
     - name: make check
