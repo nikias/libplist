@@ -23,11 +23,12 @@ jobs:
       run: |
           mkdir -p dest
           DESTDIR=`pwd`/dest make install
+          tar -C dest -cf libplist.tar usr
     - name: publish artifact
       uses: actions/upload-artifact@v2
       with:
         name: libplist-latest_${{env.target_triplet}}
-        path: dest/*
+        path: libplist.tar
 #  build-macOS:
 #    runs-on: macOS-latest
 #    steps:
