@@ -138,8 +138,8 @@ jobs:
     - name: autogen (win32)
       run: ./autogen.sh CC=/mingw32/bin/gcc CXX=/mingw32/bin/g++ --build=i686-w64-mingw32 --host=x86_64-w64-mingw32 --without-cython
     - name: print config.log
-      run: cat config.log
       if: failed()
+      run: cat config.log
     - name: make (win32)
       run: make
     - name: make check (win32)
