@@ -90,35 +90,24 @@ jobs:
           libtool
           autoconf
           automake-wrapper
-    - name: prepare environment
-      run: |
-          target_triplet=`gcc -dumpmachine`
-          case $target_triplet in
-          x86_64*)
-            arch=x86_64
-            dest=mingw64
-            ;;
-          *)
-            ;;
-          esac
-          if test -z "$arch"; then
-            echo "Unsupported target '$target_triplet'"
-            exit 1
-          fi
-          echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
-          echo "dest=$dest" >> $GITHUB_ENV
-          echo "arch=$arch" >> $GITHUB_ENV
-          cat > conftest.c << EOF
-          int
-          main ()
-          {
-            ;
-            return 0;
-          }
-          EOF
-          pacman -Ql mingw-w64-i686-gcc
-          /mingw32/bin/gcc.exe conftest.c
-      shell: bash
+    #- name: prepare environment
+    #  run: |
+    #      target_triplet=`gcc -dumpmachine`
+    #      case $target_triplet in
+    #      x86_64*)
+    #        arch=x86_64
+    #        dest=mingw64
+    #        ;;
+    #      *)
+    #        ;;
+    #      esac
+    #      if test -z "$arch"; then
+    #        echo "Unsupported target '$target_triplet'"
+    #        exit 1
+    #      fi
+    #      echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
+    #      echo "dest=$dest" >> $GITHUB_ENV
+    #      echo "arch=$arch" >> $GITHUB_ENV
     - uses: actions/checkout@v2
     - name: autogen
       run: ./autogen.sh CC=gcc CXX=g++ --without-cython
