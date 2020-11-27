@@ -79,6 +79,7 @@ jobs:
           base-devel
           git
           mingw-w64-x86_64-gcc
+          mingw-w64-i686-gcc
           make
           libtool
           autoconf
