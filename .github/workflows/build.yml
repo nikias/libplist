@@ -110,7 +110,7 @@ jobs:
             return 0;
           }
           EOF
-          ls -l /mingw32/bin
+          pacman -Ql mingw-w64-i686-gcc
           /mingw32/bin/gcc.exe conftest.c
       shell: bash
     - uses: actions/checkout@v2
