@@ -111,6 +111,7 @@ jobs:
           }
           EOF
           /mingw32/bin/gcc conftest.c
+      shell: bash
     - uses: actions/checkout@v2
     - name: autogen
       run: ./autogen.sh CC=gcc CXX=g++ --without-cython
