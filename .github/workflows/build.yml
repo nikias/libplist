@@ -93,22 +93,11 @@ jobs:
           automake-wrapper
     - name: prepare environment
       run: |
-          case ${{ matrix.arch }} in
-          x86_64*)
-            dest=mingw64
-            ;;
-          i686*)
-            dest=mingw32
-            ;;
-          *)
-            ;;
-          esac
-          if test -z "$dest"; then
-            echo "Unsupported target '${{ matrix.arch }}'"
-            exit 1
-          fi
-          echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
+          dest=`echo ${{ matrix.msystem }} |tr [:upper:] [:lower:]`
           echo "dest=$dest" >> $GITHUB_ENV
+          echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
+          echo $dest
+          gcc -dumpmachine
     - uses: actions/checkout@v2
     - name: autogen
       run: ./autogen.sh CC=gcc CXX=g++ --without-cython
@@ -134,47 +123,9 @@ jobs:
       run: |
           mkdir -p dest
           DESTDIR=`pwd`/dest make install
-          if test "${{ env.dest }}" == "mingw32"; then
-            mv dest/mingw64 dest/mingw32
-          fi
           tar -C dest -cf libplist.tar ${{ env.dest }}
     - name: publish artifact
       uses: actions/upload-artifact@v2
       with:
         name: libplist-latest_${{ matrix.arch }}-${{ env.dest }}
         path: libplist.tar
-    #- name: make clean
-    #  run: make clean
-    #- name: autogen (win32)
-    #  run: ./autogen.sh CC=/mingw32/bin/gcc.exe CXX=/mingw32/bin/g++.exe --build=i686-w64-mingw32 --host=x86_64-w64-mingw32 --without-cython
-    #- name: print config.log
-    #  if: failure()
-    #  run: cat config.log
-    #- name: make (win32)
-    #  run: make
-    #- name: make check (win32)
-    #  run: make check
-    #- name: print test logs (win32)
-    #  run: |
-    #      for I in test/*.trs; do
-    #        RES=`grep ":test-result" $I |cut -d ":" -f 3`
-    #        if test $RES != PASS; then
-    #          TESTNAME=`basename $I .trs`
-    #          echo $TESTNAME:
-    #          cat test/$TESTNAME.log
-    #          echo
-    #        fi
-    #      done
-    #  shell: bash
-    #- name: make install (win32)
-    #  run: make install
-    #- name: prepare artifact (win32)
-    #  run: |
-    #      mkdir -p dest
-    #      DESTDIR=`pwd`/dest make install
-    #      tar -C dest -cf libplist.tar mingw32
-    #- name: publish artifact (win32)
-    #  uses: actions/upload-artifact@v2
-    #  with:
-    #    name: libplist-latest_mingw32 #${{env.target_triplet}}
-    #    path: libplist.tar
