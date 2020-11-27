@@ -90,24 +90,24 @@ jobs:
           libtool
           autoconf
           automake-wrapper
-    #- name: prepare environment
-    #  run: |
-    #      target_triplet=`gcc -dumpmachine`
-    #      case $target_triplet in
-    #      x86_64*)
-    #        arch=x86_64
-    #        dest=mingw64
-    #        ;;
-    #      *)
-    #        ;;
-    #      esac
-    #      if test -z "$arch"; then
-    #        echo "Unsupported target '$target_triplet'"
-    #        exit 1
-    #      fi
-    #      echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
-    #      echo "dest=$dest" >> $GITHUB_ENV
-    #      echo "arch=$arch" >> $GITHUB_ENV
+    - name: prepare environment
+      run: |
+          case ${{ matrix.arch }} in
+          x86_64*)
+            dest=mingw64
+            ;;
+          i686*)
+            dest=mingw32
+            ;;
+          *)
+            ;;
+          esac
+          if test -z "$dest"; then
+            echo "Unsupported target '${{ matrix.arch }}'"
+            exit 1
+          fi
+          echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
+          echo "dest=$dest" >> $GITHUB_ENV
     - uses: actions/checkout@v2
     - name: autogen
       run: ./autogen.sh CC=gcc CXX=g++ --without-cython
@@ -131,14 +131,16 @@ jobs:
       run: make install
     - name: prepare artifact
       run: |
-          echo ${{ matrix.arch }}
           mkdir -p dest
           DESTDIR=`pwd`/dest make install
-          tar -C dest -cf libplist.tar ${{env.dest}}
+          if test "${{ env.dest }}" == "mingw32"; then
+            mv dest/mingw64 dest/mingw32
+          fi
+          tar -C dest -cf libplist.tar ${{ env.dest }}
     - name: publish artifact
       uses: actions/upload-artifact@v2
       with:
-        name: libplist-latest_${{ matrix.arch }} #${{ env.dest}}
+        name: libplist-latest_${{ matrix.arch }}-${{ env.dest }}
         path: libplist.tar
     #- name: make clean
     #  run: make clean
