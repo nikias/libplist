@@ -9,6 +9,8 @@ jobs:
     - name: install dependencies
       run: |
           sudo apt-get install cython
+    - name: prepare environment
+      run: |
           echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
     - uses: actions/checkout@v2
       with:
@@ -81,9 +83,24 @@ jobs:
           libtool
           autoconf
           automake-wrapper
-    - name: install dependencies
+    - name: prepare environment
       run: |
-          echo `gcc -dumpmachine`
+          target_triplet=`gcc -dumpmachine`
+          case $target_triplet in
+          x86_64*)
+            arch=x86_64
+            dest=mingw64
+            ;;
+          *)
+            ;;
+          esac
+          if test -z "$arch"; then
+            echo "Unsupported target '$target_triplet'"
+            exit 1
+          fi
+          echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
+          echo "dest=$dest" >> $GITHUB_ENV
+          echo "arch=$arch" >> $GITHUB_ENV
     - uses: actions/checkout@v2
     - name: autogen
       run: ./autogen.sh CC=gcc CXX=g++ --without-cython
@@ -109,9 +126,9 @@ jobs:
       run: |
           mkdir -p dest
           DESTDIR=`pwd`/dest make install
-          tar -C dest -cf libplist.tar mingw64
+          tar -C dest -cf libplist.tar ${{env.dest}}
     - name: publish artifact
       uses: actions/upload-artifact@v2
       with:
-        name: libplist-latest_win
+        name: libplist-latest_${{env.target_triplet}}
         path: libplist.tar
