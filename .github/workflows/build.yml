@@ -103,13 +103,13 @@ jobs:
           echo "dest=$dest" >> $GITHUB_ENV
           echo "arch=$arch" >> $GITHUB_ENV
           cat > conftest.c << EOF
-int
-main ()
-{
-  ;
-  return 0;
-}
-EOF
+          int
+          main ()
+          {
+            ;
+            return 0;
+          }
+          EOF
           /mingw32/bin/gcc conftest.c
     - uses: actions/checkout@v2
     - name: autogen
