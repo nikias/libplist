@@ -96,8 +96,6 @@ jobs:
           dest=`echo ${{ matrix.msystem }} |tr [:upper:] [:lower:]`
           echo "dest=$dest" >> $GITHUB_ENV
           echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
-          echo $dest
-          gcc -dumpmachine
     - uses: actions/checkout@v2
     - name: autogen
       run: ./autogen.sh CC=gcc CXX=g++ --without-cython
