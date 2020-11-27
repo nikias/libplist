@@ -86,6 +86,7 @@ jobs:
           automake-wrapper
     - name: prepare environment
       run: |
+          ls -l /mingw32/bin
           target_triplet=`gcc -dumpmachine`
           case $target_triplet in
           x86_64*)
