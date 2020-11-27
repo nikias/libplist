@@ -70,6 +70,13 @@ jobs:
     defaults:
       run:
         shell: msys2 {0}
+    strategy:
+      fail-fast: false
+      matrix:
+        include: [
+          { msystem: MINGW64, arch: x86_64 },
+          { msystem: MINGW32, arch: i686   }
+        ]
     steps:
     - uses: msys2/setup-msys2@v2
       with:
@@ -78,8 +85,7 @@ jobs:
         install: >-
           base-devel
           git
-          mingw-w64-x86_64-gcc
-          mingw-w64-i686-gcc
+          mingw-w64-${{ matrix.arch }}-gcc
           make
           libtool
           autoconf
@@ -136,46 +142,47 @@ jobs:
       run: make install
     - name: prepare artifact
       run: |
+          echo ${{ matrix.arch }}
           mkdir -p dest
           DESTDIR=`pwd`/dest make install
           tar -C dest -cf libplist.tar ${{env.dest}}
     - name: publish artifact
       uses: actions/upload-artifact@v2
       with:
-        name: libplist-latest_${{env.dest}}
+        name: libplist-latest_${{ matrix.arch }} #${{ env.dest}}
         path: libplist.tar
-    - name: make clean
-      run: make clean
-    - name: autogen (win32)
-      run: ./autogen.sh CC=/mingw32/bin/gcc.exe CXX=/mingw32/bin/g++.exe --build=i686-w64-mingw32 --host=x86_64-w64-mingw32 --without-cython
-    - name: print config.log
-      if: failure()
-      run: cat config.log
-    - name: make (win32)
-      run: make
-    - name: make check (win32)
-      run: make check
-    - name: print test logs (win32)
-      run: |
-          for I in test/*.trs; do
-            RES=`grep ":test-result" $I |cut -d ":" -f 3`
-            if test $RES != PASS; then
-              TESTNAME=`basename $I .trs`
-              echo $TESTNAME:
-              cat test/$TESTNAME.log
-              echo
-            fi
-          done
-      shell: bash
-    - name: make install (win32)
-      run: make install
-    - name: prepare artifact (win32)
-      run: |
-          mkdir -p dest
-          DESTDIR=`pwd`/dest make install
-          tar -C dest -cf libplist.tar mingw32
-    - name: publish artifact (win32)
-      uses: actions/upload-artifact@v2
-      with:
-        name: libplist-latest_mingw32 #${{env.target_triplet}}
-        path: libplist.tar
+    #- name: make clean
+    #  run: make clean
+    #- name: autogen (win32)
+    #  run: ./autogen.sh CC=/mingw32/bin/gcc.exe CXX=/mingw32/bin/g++.exe --build=i686-w64-mingw32 --host=x86_64-w64-mingw32 --without-cython
+    #- name: print config.log
+    #  if: failure()
+    #  run: cat config.log
+    #- name: make (win32)
+    #  run: make
+    #- name: make check (win32)
+    #  run: make check
+    #- name: print test logs (win32)
+    #  run: |
+    #      for I in test/*.trs; do
+    #        RES=`grep ":test-result" $I |cut -d ":" -f 3`
+    #        if test $RES != PASS; then
+    #          TESTNAME=`basename $I .trs`
+    #          echo $TESTNAME:
+    #          cat test/$TESTNAME.log
+    #          echo
+    #        fi
+    #      done
+    #  shell: bash
+    #- name: make install (win32)
+    #  run: make install
+    #- name: prepare artifact (win32)
+    #  run: |
+    #      mkdir -p dest
+    #      DESTDIR=`pwd`/dest make install
+    #      tar -C dest -cf libplist.tar mingw32
+    #- name: publish artifact (win32)
+    #  uses: actions/upload-artifact@v2
+    #  with:
+    #    name: libplist-latest_mingw32 #${{env.target_triplet}}
+    #    path: libplist.tar
