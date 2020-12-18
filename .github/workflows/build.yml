@@ -59,6 +59,7 @@ jobs:
           done
           export CFLAGS="$USEARCHS -isysroot $SDKDIR"
           echo "Using CFLAGS: $CFLAGS"
+          export PATH="$PATH:/Library/Frameworks/Python.framework/Versions/2.7/bin"
           ./autogen.sh
     - name: make
       run: make
