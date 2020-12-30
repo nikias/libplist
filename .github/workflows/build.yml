@@ -62,6 +62,9 @@ jobs:
           export PATH="$PATH:/Library/Frameworks/Python.framework/Versions/2.7/bin"
           export LIBS="-L/Library/Frameworks/Python.framework/Versions/2.7/lib"
           ./autogen.sh
+    - name: print config.log
+      if: ${{ failure() }}
+      run: cat config.log
     - name: make
       run: make
     - name: make check
