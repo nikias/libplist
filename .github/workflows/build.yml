@@ -62,9 +62,10 @@ jobs:
           PYTHON3_BIN=`xcrun -f python3`
           if test -x $PYTHON3_BIN; then
             export PYTHON=$PYTHON3_BIN
-            #export PYTHONLIBS
-            PYTHON_FRAMEWORK_DIR=`xcode-select -p`/Library/Frameworks/Python3.framework/Versions/3.8/Python3
-            LD_PYTHON_FRAMEWORK=`$PYTHON3_BIN -c "import os; print(os.path.realpath('$PYTHON_FRAMEWORK_DIR'))"`
+            PYTHON_FRAMEWORK_PATH=`xcode-select -p`/Library/Frameworks/Python3.framework/Versions/Current
+            PYTHON_LIBS_PATH=`$PYTHON3_BIN -c "import os; print(os.path.realpath('$PYTHON_FRAMEWORK_PATH/lib'))"`
+            export PYTHONLIBS $PYTHON_LIBS_PATH
+            LD_PYTHON_FRAMEWORK=`$PYTHON3_BIN -c "import os; print(os.path.realpath('$PYTHON_FRAMEWORK_PATH/Python3'))"`
             export PYTHON_EXTRA_LDFLAGS="-Wl,-stack_size,1000000  -framework CoreFoundation $LD_PYTHON_FRAMEWORK"
           else
             export PATH="$PATH:/Library/Frameworks/Python.framework/Versions/2.7/bin"
