@@ -64,7 +64,7 @@ jobs:
             export PYTHON=$PYTHON3_BIN
             #export PYTHONLIBS
             PYTHON_FRAMEWORK_DIR=`xcode-select -p`/Library/Frameworks/Python3.framework/Versions/3.8/Python3
-            LD_PYTHON_FRAMEWORK=`$PYTHON3_BIN -c "import os; print(os.path.realpath('$PYTHON_FRAMEWORK_DIR')"`
+            LD_PYTHON_FRAMEWORK=`$PYTHON3_BIN -c "import os; print(os.path.realpath('$PYTHON_FRAMEWORK_DIR'))"`
             export PYTHON_EXTRA_LDFLAGS="-Wl,-stack_size,1000000  -framework CoreFoundation $LD_PYTHON_FRAMEWORK"
           else
             export PATH="$PATH:/Library/Frameworks/Python.framework/Versions/2.7/bin"
