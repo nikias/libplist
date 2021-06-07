@@ -59,9 +59,15 @@ jobs:
           done
           export CFLAGS="$USEARCHS -isysroot $SDKDIR"
           echo "Using CFLAGS: $CFLAGS"
-          export PATH="$PATH:/Library/Frameworks/Python.framework/Versions/2.7/bin"
-          export LIBS="-L/Library/Frameworks/Python.framework/Versions/2.7/lib"
-          export PYTHON_EXTRA_LDFLAGS="-u _PyMac_Error /System/Library/Frameworks/Python.framework/Versions/2.7/Python"
+          PYTHON3_BIN=`xcrun -f python3`
+          if test -x $PYTHON3_BIN; then
+            export PYTHON=$PYTHON3_BIN
+            export PYTHONLIBS
+          else
+            export PATH="$PATH:/Library/Frameworks/Python.framework/Versions/2.7/bin"
+            export LIBS="-L/Library/Frameworks/Python.framework/Versions/2.7/lib"
+            export PYTHON_EXTRA_LDFLAGS="-u _PyMac_Error /System/Library/Frameworks/Python.framework/Versions/2.7/Python"
+          fi
           ./autogen.sh
     - name: print config.log
       if: ${{ failure() }}
