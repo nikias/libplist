@@ -122,6 +122,7 @@ jobs:
           libtool
           autoconf
           automake-wrapper
+          cython
     - name: prepare environment
       run: |
           dest=`echo ${{ matrix.msystem }} |tr [:upper:] [:lower:]`
@@ -129,7 +130,7 @@ jobs:
           echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
     - uses: actions/checkout@v2
     - name: autogen
-      run: ./autogen.sh CC=gcc CXX=g++ --without-cython
+      run: ./autogen.sh CC=gcc CXX=g++
     - name: make
       run: make
     - name: make check
