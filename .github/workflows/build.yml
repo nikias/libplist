@@ -62,10 +62,11 @@ jobs:
           PYTHON3_BIN=`xcrun -f python3`
           if test -x $PYTHON3_BIN; then
             export PYTHON=$PYTHON3_BIN
+            PYTHON_VER=`$PYTHON3_BIN -c "import distutils.sysconfig; print(distutils.sysconfig.get_config_var('VERSION'))"`
             PYTHON_EXEC_PREFIX=`$PYTHON3_BIN -c "import distutils.sysconfig; print(distutils.sysconfig.get_config_var('exec_prefix'))"`
-            PYTHON_LIBS_PATH=$PYTHON_EXEC_PREFIX/lib #`$PYTHON3_BIN -c "import os; print(os.path.realpath('$PYTHON_FRAMEWORK_PATH/lib'))"`
-            export PYTHONLIBS="$PYTHON_LIBS_PATH"
-            PYTHON_FRAMEWORK_PATH=$PYTHON_EXEC_PREFIX/Python3 #`$PYTHON3_BIN -c "import os; print(os.path.realpath('$PYTHON_FRAMEWORK_PATH/Python3'))"`
+            PYTHON_LIBS_PATH=$PYTHON_EXEC_PREFIX/lib
+            PYTHON_FRAMEWORK_PATH=$PYTHON_EXEC_PREFIX/Python3
+            export PYTHON_LIBS="-L$PYTHON_LIBS_PATH -lpython$PYTHON_VER"
             export PYTHON_EXTRA_LDFLAGS="-Wl,-stack_size,1000000  -framework CoreFoundation $PYTHON_FRAMEWORK_PATH"
           else
             export PATH="$PATH:/Library/Frameworks/Python.framework/Versions/2.7/bin"
