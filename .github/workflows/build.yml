@@ -62,11 +62,11 @@ jobs:
           PYTHON3_BIN=`xcrun -f python3`
           if test -x $PYTHON3_BIN; then
             export PYTHON=$PYTHON3_BIN
-            PYTHON_FRAMEWORK_PATH=`xcode-select -p`/Library/Frameworks/Python3.framework/Versions/Current
-            PYTHON_LIBS_PATH=`$PYTHON3_BIN -c "import os; print(os.path.realpath('$PYTHON_FRAMEWORK_PATH/lib'))"`
+            PYTHON_EXEC_PREFIX=`$PYTHON3_BIN -c "import distutils.sysconfig; print(distutils.sysconfig.get_config_var('exec_prefix'))"`
+            PYTHON_LIBS_PATH=$PYTHON_EXEC_PREFIX/lib #`$PYTHON3_BIN -c "import os; print(os.path.realpath('$PYTHON_FRAMEWORK_PATH/lib'))"`
             export PYTHONLIBS="$PYTHON_LIBS_PATH"
-            LD_PYTHON_FRAMEWORK=`$PYTHON3_BIN -c "import os; print(os.path.realpath('$PYTHON_FRAMEWORK_PATH/Python3'))"`
-            export PYTHON_EXTRA_LDFLAGS="-Wl,-stack_size,1000000  -framework CoreFoundation $LD_PYTHON_FRAMEWORK"
+            PYTHON_FRAMEWORK_PATH=$PYTHON_EXEC_PREFIX/Python3 #`$PYTHON3_BIN -c "import os; print(os.path.realpath('$PYTHON_FRAMEWORK_PATH/Python3'))"`
+            export PYTHON_EXTRA_LDFLAGS="-Wl,-stack_size,1000000  -framework CoreFoundation $PYTHON_FRAMEWORK_PATH"
           else
             export PATH="$PATH:/Library/Frameworks/Python.framework/Versions/2.7/bin"
             export LIBS="-L/Library/Frameworks/Python.framework/Versions/2.7/lib"
