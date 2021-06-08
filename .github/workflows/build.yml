@@ -44,7 +44,7 @@ jobs:
           else
             brew install libtool autoconf automake
           fi
-          pip install cython
+          pip3 install cython
       shell: bash
     - uses: actions/checkout@v2
     - name: autogen
