@@ -132,8 +132,7 @@ jobs:
     - name: autogen
       run: ./autogen.sh CC=gcc CXX=g++
     - name: make
-      run: |
-          make V=1
+      run: make
     - name: make check
       run: make check
     - name: print test logs
