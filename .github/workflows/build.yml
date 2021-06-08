@@ -132,7 +132,9 @@ jobs:
     - name: autogen
       run: ./autogen.sh CC=gcc CXX=g++
     - name: make
-      run: make V=1
+      run: |
+          export PYTHON_EXTRA_LDFLAGS="-no-undefined"
+          make V=1
     - name: make check
       run: make check
     - name: print test logs

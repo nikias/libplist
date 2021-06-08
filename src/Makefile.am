@@ -53,8 +53,8 @@ libplist___2_0_la_SOURCES = \
 	$(top_srcdir)/include/plist/Uid.h
 
 if WIN32
-libplist_2_0_la_LDFLAGS += -avoid-version -static-libgcc
-libplist___2_0_la_LDFLAGS += -avoid-version -static-libgcc
+libplist_2_0_la_LDFLAGS += -avoid-version -no-undefined -static-libgcc
+libplist___2_0_la_LDFLAGS += -avoid-version -no-undefined -static-libgcc
 endif
 
 pkgconfigdir = $(libdir)/pkgconfig
