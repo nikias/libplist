@@ -16,7 +16,10 @@ jobs:
       with:
         fetch-depth: 0
     - name: autogen
-      run: ./autogen.sh LDFLAGS="-Wl,-rpath=/usr/local/lib"
+      run: |
+          export PYTHON=python3
+          export LDFLAGS="-Wl,-rpath=/usr/local/lib"
+          ./autogen.sh
     - name: make
       run: make
     - name: make check
