@@ -185,7 +185,7 @@ jobs:
     #- name: list
     #  run: dir D:\a\libplist\libplist\vcpkg
     - name: cmake
-      run: cmake -G "Visual Studio 77 2022" -B build -A x64 -S . -DENABLE_CYTHON=OFF
+      run: cmake -G "Visual Studio 17 2022" -B build -A x64 -S . -DENABLE_CYTHON=OFF
     - name: build
       run: cmake --build build
     #- name: autogen
