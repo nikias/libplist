@@ -184,8 +184,8 @@ jobs:
         fetch-depth: 0
     #- name: list
     #  run: dir D:\a\libplist\libplist\vcpkg
-    - name: test
-      run: which cmake
+    - name: cmake
+      run: cmake -G "Visual Studio 18 2022" -B build -A x64 -S . -DENABLE_CYTHON=OFF
     #- name: autogen
     #  run: ./autogen.sh CC=gcc CXX=g++ --enable-debug
     #- name: make
