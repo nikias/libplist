@@ -191,8 +191,8 @@ jobs:
     - name: publish artifact
       uses: actions/upload-artifact@v4
       with:
-        name: plist-2.0.lib
-        path: build/Debug/plist-2.0.lib
+        name: plist-2.0
+        path: build/Debug/plist-2.0.*
     #- name: autogen
     #  run: ./autogen.sh CC=gcc CXX=g++ --enable-debug
     #- name: make
