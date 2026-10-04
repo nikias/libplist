@@ -105,9 +105,9 @@ jobs:
       fail-fast: false
       matrix:
         include: [
-          { msystem: CLANG64, arch: x86_64, flavor: clang-x86_64 },
-          { msystem: MINGW64, arch: x86_64, flavor: x86_64 },
-          { msystem: MINGW32, arch: i686, flavor: i686 }
+          { msystem: CLANG64, arch: x86_64, flavor: clang-x86_64, cc: clang },
+          { msystem: MINGW64, arch: x86_64, flavor: x86_64, cc: clang },
+          { msystem: MINGW32, arch: i686, flavor: i686, cc: gcc }
         ]
     steps:
     - uses: msys2/setup-msys2@v2
@@ -118,7 +118,7 @@ jobs:
         install: >-
           base-devel
           git
-          mingw-w64-${{ matrix.flavor }}-clang
+          mingw-w64-${{ matrix.flavor }}-${{ matrix.cc }}
           mingw-w64-${{ matrix.flavor }}-pkgconf
           mingw-w64-${{ matrix.flavor }}-python
           make
