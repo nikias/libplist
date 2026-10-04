@@ -106,7 +106,8 @@ jobs:
       matrix:
         include: [
           { msystem: CLANG64, arch: x86_64, flavor: clang-x86_64, cc: clang },
-          { msystem: MINGW64, arch: x86_64, flavor: x86_64, cc: clang },
+          { msystem: UCRT64, arch: x86_64, flavor: ucrt-x86_64, cc: gcc },
+          { msystem: MINGW64, arch: x86_64, flavor: x86_64, cc: gcc },
           { msystem: MINGW32, arch: i686, flavor: i686, cc: gcc }
         ]
     steps:
@@ -115,6 +116,7 @@ jobs:
         msystem: ${{ matrix.msystem }}
         release: false
         update: false
+        suppress-deprecation-warnings: msystem-mingw32 msystem-mingw64
         install: >-
           base-devel
           git
