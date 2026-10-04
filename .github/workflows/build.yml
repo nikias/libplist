@@ -136,7 +136,7 @@ jobs:
       with:
         fetch-depth: 0
     - name: autogen
-      run: ./autogen.sh CC=gcc CXX=g++ --enable-debug
+      run: ./autogen.sh --enable-debug
     - name: make
       run: make
     - name: make check
