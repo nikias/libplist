@@ -105,9 +105,9 @@ jobs:
       fail-fast: false
       matrix:
         include: [
-          { msystem: UCRT64, arch: x86_64 },
-          { msystem: MINGW64, arch: x86_64 },
-          { msystem: MINGW32, arch: i686   }
+          { msystem: CLANG64, arch: x86_64, flavor: clang-x86_64 },
+          { msystem: MINGW64, arch: x86_64, flavor: x86_64 },
+          { msystem: MINGW32, arch: i686, flavor: i686 }
         ]
     steps:
     - uses: msys2/setup-msys2@v2
@@ -118,9 +118,9 @@ jobs:
         install: >-
           base-devel
           git
-          mingw-w64-${{ matrix.arch }}-gcc
-          mingw-w64-${{ matrix.arch }}-pkg-config
-          mingw-w64-${{ matrix.arch }}-python
+          mingw-w64-${{ matrix.flavor }}-clang
+          mingw-w64-${{ matrix.flavor }}-pkgconf
+          mingw-w64-${{ matrix.flavor }}-python
           make
           libtool
           autoconf
