@@ -106,6 +106,7 @@ jobs:
       matrix:
         include: [
           { msystem: CLANG64, arch: x86_64, flavor: w64-clang, cc: clang },
+          { msystem: CLANGARM64, arch: aarch64, flavor: w64-clang, cc: clang },
           { msystem: UCRT64, arch: x86_64, flavor: w64-ucrt, cc: gcc },
           { msystem: MINGW64, arch: x86_64, flavor: w64, cc: gcc },
           { msystem: MINGW32, arch: i686, flavor: w64, cc: gcc }
